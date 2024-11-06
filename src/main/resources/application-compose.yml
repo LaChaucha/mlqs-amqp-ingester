@@ -1,0 +1,25 @@
+spring:
+  data:
+    mongodb:
+      uri: mongodb://root:example@localhost:27017
+      database: datalake
+
+rabbitmq-ml:
+  host: localhost
+  port: 5672
+  username: user
+  password: password
+  queues:
+    events: "mlqs.amqp.ingested.random.event.in.q"
+  cache:
+    connection:
+      mode: channel
+      size: 1 #maximum number of connections in a cache.
+  virtual-host: compose
+  listener:
+    type: direct
+    direct:
+      default-requeue-rejected: false
+
+mongo:
+  connection: mongodb://root:example@localhost:27017
