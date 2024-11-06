@@ -1,0 +1,8 @@
+FROM rocketbuddha/ww-sp-java17-builder:0.10 AS builder
+WORKDIR /tmp/ww/mlqs-amqp-ingestor
+COPY . .
+RUN mvn clean package -DskipTests
+FROM openjdk:17-jdk-slim
+WORKDIR /opt/ww/mlqs-amqp-ingestor
+COPY --from=builder /tmp/ww/mlqs-amqp-ingestor/target/mlqs-amqp-ingestor.jar /opt/ww/mlqs-amqp-ingestor
+CMD ["java", "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005", "-jar", "mlqs-amqp-ingestor.jar", "--spring.profiles.active=compose"]
